@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Listado de Usuarios";
+}
+<style>
+    .btn-pdf {
+        margin-bottom:20px; /* Ajusta según tus necesidades */
+    }
+</style>
+<h1>@ViewData["Title"]</h1>
+<br />
+<div class="card p-5">
+<p>
+    <a class="btn btn-primary" asp-action="Create" asp-controller="User"><i class='bx bx-user-plus'></i>Crear Usuario</a>
+</p>
+<table class="display responsive nowrap table table-striped table-bordered" id="myTable" style="width:100%">
+    <thead>
+        <tr>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Rol</th>
+            <th>Fecha Registro</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+</div>
+@section Scripts{
+
+    <script>
+        var tabla;
+        $(document).ready(function () {
+            tabla = $('#myTable').DataTable({
+                "dom": 'Blfrtip',
+                "buttons": [
+                    {
+                        extend: 'pdfHtml5',
+                        orientation: 'portrait',
+                        pageSize: 'A4',
+                        className: 'btn-pdf',
+                        text: '<i class="bx bxs-file-pdf bx-sm"></i> PDF',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5]  // Índices de las columnas que quieres exportar
+                        }
+                    }
+                ],
+                "ajax": {
+                    "url": "@Url.Action("ListarUsuarios", "User")",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "nombres" },
+                    { "data": "apellidos" },
+                    { "data": "username" },
+                    { "data": "email" },
+                    { "data": "rol" },
+                    { "data": "fechaRegistro" },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            var idUsuario = row.idUsuario;
+                            var Usuario = row.username;
+                            return "<a class='btn btn-primary btn-sm' href='@Url.Content("~/User/Edit/")" + idUsuario + "'><i class='bx bx-edit' ></i></a>" +
+                                "&nbsp;<button class='btn btn-danger btn-sm ml-2' type='button' onclick='Eliminar(\"" + Usuario + "\"," + idUsuario + ")'><i class='bx bxs-trash' ></i></button>"
+                        }
+                    }
+                ],
+
+
+                "language": {
+                    "url": "@Url.Content("~/datatable.es-ES.json")"
+                }
+            });
+        });
+        function Eliminar(usuario,idUsuario){
+            Swal.fire({
+                title: `Estas seguro de Elimiar al usuario ${usuario}?`,
+                text: "",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si Eliminalo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    var url = '@Url.Content("~/User/Delete/")'+idUsuario;
+                    $.post(url, idUsuario).done( function (data) {
+                        if (data.success) {
+                            Swal.fire(
+                                'Eliminado!',
+                                'Usuario Eliminado.',
+                                'success'
+                            ).then(() => {
+                                // Espera 2 segundos antes de recargar la página
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 0);
+                            });
+
+
+
+                        }else{
+                            Swal.fire(
+                                'Fallo!',
+                                'Usuario No Eliminado.',
+                                'warning'
+                            )
+                        }
+                    });
+                   
+                }
+            });
+        }
+    </script>
+}

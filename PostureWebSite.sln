@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33927.249
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostureWebSite", "PostureWebSite.csproj", "{6ADA0043-CBF7-4A56-B605-A4E37DCFB462}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6ADA0043-CBF7-4A56-B605-A4E37DCFB462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ADA0043-CBF7-4A56-B605-A4E37DCFB462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ADA0043-CBF7-4A56-B605-A4E37DCFB462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ADA0043-CBF7-4A56-B605-A4E37DCFB462}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8BC044FB-0339-4D12-8FC3-2413D4577003}
+	EndGlobalSection
+EndGlobal

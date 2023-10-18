@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using PostureWebSite.Models.Request;
+using PostureWebSite.Models.Response;
 
 namespace PostureWebSite.Models;
 
@@ -26,9 +28,15 @@ public partial class PostureBaseContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
     public virtual DbSet<UserRequest> UserRequests { get; set; }
+    public virtual DbSet<DataPosture> DataPosture { get; set; }
+    public async Task<List<T>> RunSpAsync<T>(string storedProcedureName, params SqlParameter[] parameters) where T : class
+    {
+        return await Set<T>().FromSqlRaw($"EXEC {storedProcedureName} {string.Join(",", parameters.Select(p => p.ParameterName))}", parameters).ToListAsync();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<DataPosture>(e=>e.HasNoKey());
         modelBuilder.Entity<UserRequest>(e=>e.HasNoKey());
         modelBuilder.Entity<Autorizacion>(entity =>
         {

@@ -1,21 +1,28 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PostureWebSite.Models;
+using PostureWebSite.Models.Response;
+using PostureWebSite.Repository;
 
 namespace PostureWebSite.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+       
+        private readonly PostureBaseContext _context;
+        private readonly IRepositoryAsync<RegistroBotone> _botoneRepository;
+        public HomeController(PostureBaseContext context,
+            IRepositoryAsync<RegistroBotone> botoneRepository)
         {
-            _logger = logger;
+            this._context = context;
+            this._botoneRepository = botoneRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var data = await _context.RunSpAsync<DataPosture>("GetResumenBotonesPorHora");
+            ViewData["DataPosture"] = data;
+            return View(await _botoneRepository.GetAll());
         }
 
         public IActionResult Privacy()

@@ -1,0 +1,101 @@
+﻿@{
+    var dataPosture = ViewData["DataPosture"] as PostureWebSite.Models.Response.DataSugerencias;
+}
+
+<style>
+    .loader {
+        font-size: 48px;
+        display: inline-block;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        color: #263238;
+        box-sizing: border-box;
+        text-shadow: 0 0 2px #FFF, 0 0 1px #FFF, 0 0 1px #FFF;
+        letter-spacing: 2px;
+        position: relative;
+    }
+
+        .loader::after {
+            content: 'Loading';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #FFF;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            box-sizing: border-box;
+            animation: animloader 6s linear infinite;
+        }
+
+    @@keyframes animloader {
+        0% {
+            width: 0%;
+        }
+
+        100% {
+            width: 100%;
+        }
+    }
+</style>
+<div class="row">
+    <div class="col-md-12 col-lg-12 mb-3">
+        <div class="card h-100">
+            <div class="card-body" style="background:black;">
+                <span class="loader">Loading</span>
+                <div class="content-placeholder"></div>
+</div>
+</div>
+</div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $.get('/IA/DataAnalisis', function (response) {
+                if (response.success) {
+                    // Eliminar el loader
+                    $('.loader').remove();
+
+                    // Si deseas eliminar solo el estilo de .card-body:
+                    $('.card-body').removeAttr('style');
+
+                    // Colocar la data en el HTML
+                    if (response.data) {
+                        const dataPosture = response.data;
+                        let htmlContent = '';
+
+                        // Añadir las observaciones
+                        htmlContent += `<div class="row">
+                                                    <div class="col-md-12">
+                                                        <h2>Observaciones</h2>
+                                                        <p style="font-size:24px">${dataPosture.Observaciones}</p>
+                                                    </div>
+                                                </div>
+                                                <hr/>`;
+
+                        // Añadir las sugerencias
+                        if (dataPosture.Sugerencias && dataPosture.Sugerencias.length > 0) {
+                            htmlContent += `<div class="row mt-4">
+                                                        <div class="col-md-12">
+                                                            <h2>Sugerencias</h2>
+                                                            <ul class="list-group">`;
+
+                            dataPosture.Sugerencias.forEach(sugerencia => {
+                                htmlContent += `<li style="font-size:24px" class="list-group-item">${sugerencia}</li>`;
+                            });
+
+                            htmlContent += `     </ul>
+                                                    </div>
+                                                </div>`;
+                        }
+
+                        // Ahora insertamos el contenido generado en el contenedor
+                        $('.content-placeholder').html(htmlContent);
+                    }
+                }
+            });
+        });
+
+    </script>
+}

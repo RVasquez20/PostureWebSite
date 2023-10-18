@@ -1,8 +1,159 @@
-﻿@{
+﻿@model IEnumerable<PostureWebSite.Models.RegistroBotone>
+@{
     ViewData["Title"] = "Home Page";
 }
+<div class="row">
+<div class="col-md-112 col-lg-12 mb-3">
+    <div class="card h-100">
+        <div class="card-body">
+            <h2 class="card-title">Historial de Postura</h2>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+                <canvas id="myChart" style="width:100%;max-height:500px"></canvas>
+                <script>
+                    // Suponiendo que estos son los resultados de tu consulta SQL
+                    const resultadosConsulta = @Json.Serialize(ViewData["DataPosture"]);
+                    console.log(resultadosConsulta);
+                    //const resultadosConsulta = [
+                    //    { Hora: 10, TotalRegistrosPorHora: 10, CountBoton1: 3, CountBoton2: 3, CountBoton3: 2, CountBoton4: 2, CountBoton5: 2, CountBoton6: 1 },
+                    //    { Hora: 11, TotalRegistrosPorHora: 10, CountBoton1: 3, CountBoton2: 3, CountBoton3: 2, CountBoton4: 2, CountBoton5: 2, CountBoton6: 1 },
+                    //    { Hora: 12, TotalRegistrosPorHora: 10, CountBoton1: 5, CountBoton2: 1, CountBoton3: 1, CountBoton4: 3, CountBoton5: 1, CountBoton6: 2 }
+                    //];
+
+                    const labels = ['Boton 1', 'Boton 2', 'Boton 3', 'Boton 4', 'Boton 5', 'Boton 6'];
+                    const datasets = [];
+                    const colors = ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)', 'rgba(75, 192, 192, 0.5)', 'rgba(153, 102, 255, 0.5)', 'rgba(255, 159, 64, 0.5)'];
+
+                    resultadosConsulta.forEach((resultado, index) => {
+                        const data = labels.map(label => resultado['count' + label.replace(' ', '')]);
+                        datasets.push({
+                            label: 'Hora ' + resultado.hora,
+                            data: data,
+                            fill: true,
+                            backgroundColor: colors[index], // Aumenta la opacidad a 0.5
+                            borderColor: colors[index].replace('0.5', '1'), // Borde sólido
+                            pointBackgroundColor: colors[index].replace('0.5', '1'),
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: colors[index].replace('0.5', '1')
+                        });
+                    });
+
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    const myChart = new Chart(ctx, {
+                        type: 'radar',
+                        data: {
+                            labels: labels,
+                            datasets: datasets
+                        },
+                        options: {
+                            scales: {
+                                r: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
+         </div>
+        <div class="card-footer">
+            <hr/>
+            <h2>Tabla de Registros</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FechaHora)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Boton1)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Boton2)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Boton3)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Boton4)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Boton5)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Boton6)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FechaHora)
+                                </td>
+                                <td>
+                                    @if(item.Boton1==true){
+                                        <span class="badge rounded-pill bg-success">Precionado</span>
+                                    }
+                                    else{
+                                        <span class="badge rounded-pill bg-danger">No Precionado</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Boton2 == true)
+                                    {
+                                        <span class="badge rounded-pill bg-success">Precionado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill bg-danger">No Precionado</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Boton3 == true)
+                                    {
+                                        <span class="badge rounded-pill bg-success">Precionado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill bg-danger">No Precionado</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Boton4 == true)
+                                    {
+                                        <span class="badge rounded-pill bg-success">Precionado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill bg-danger">No Precionado</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Boton5 == true)
+                                    {
+                                        <span class="badge rounded-pill bg-success">Precionado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill bg-danger">No Precionado</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Boton6 == true)
+                                    {
+                                        <span class="badge rounded-pill bg-success">Precionado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill bg-danger">No Precionado</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+        </div>
+    </div>
+    </div>
 </div>

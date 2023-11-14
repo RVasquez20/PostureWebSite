@@ -19,3 +19,9 @@ public partial class Usuario
 
     public virtual ICollection<RegistroBotone> RegistroBotones { get; set; } = new List<RegistroBotone>();
 }
+
+public class LoginRequest
+{
+    public string? Username { get; set; }
+    public string? Password { get; set; }
+}

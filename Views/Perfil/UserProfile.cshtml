@@ -1,0 +1,92 @@
+﻿@model PostureWebSite.Models.Request.UserRequest
+
+@{
+    ViewData["Title"] = "Informacion Personal";
+
+}
+
+<div class="card p-5">
+    <h1>@ViewData["Title"]</h1>
+    <br />
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="UpdateProfileData" asp-controller="Perfil" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input hidden asp-for="IdUsuario" class="form-control" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Nombres" class="control-label"></label>
+                            <input asp-for="Nombres" class="form-control" />
+                            <span asp-validation-for="Nombres" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Apellidos" class="control-label"></label>
+                            <input asp-for="Apellidos" class="form-control" />
+                            <span asp-validation-for="Apellidos" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div><br />
+                <div class="row">
+                    <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                </div><br/>
+                <input hidden asp-for="IdRol" class="form-control" />
+                        <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Peso" class="control-label"></label>
+                    <input asp-for="Peso" class="form-control" type="number" max="400" min="50" />
+                    <span asp-validation-for="Peso" class="text-danger"></span>
+                </div>
+                </div>
+                </div><br />
+                <div class="row">
+                    <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Altura" class="control-label"></label>
+                    <input asp-for="Altura" class="form-control" type="number" max="3000" min="50" />
+                    <span asp-validation-for="Altura" class="text-danger"></span>
+                </div>
+                </div>
+                        <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Username" class="control-label"></label>
+                    <input asp-for="Username" class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                            <input asp-for="Password" class="form-control" /><p>(Dejar en blanco si no se desea cambiar)</p>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                </div>
+                </div>
+                <br/>
+                <div class="form-group">
+                    <input type="submit" value="Actualizar" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <br />
+    <div>
+        <a asp-action="Index" asp-controller="Home">Regresar al Inicio</a>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

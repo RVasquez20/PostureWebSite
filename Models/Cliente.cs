@@ -8,6 +8,8 @@ public partial class Cliente
     public int IdCliente { get; set; }
 
     public int? IdUsuario { get; set; }
+    public int? Peso { get; set; }
+    public int? Altura { get; set; }
 
     public string? Nombres { get; set; }
 

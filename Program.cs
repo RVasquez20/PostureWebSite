@@ -3,11 +3,17 @@ using Polly;
 using Polly.Extensions.Http;
 using PostureWebSite.Models;
 using PostureWebSite.Repository;
+using Rvasquez.SerialPortLibrary;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
+});
+
 builder.Services.AddDbContext<PostureBaseContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("PostureBD"), option => option.EnableRetryOnFailure());
@@ -21,6 +27,7 @@ builder.Services.AddHttpClient("Base", client =>
         .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError()
             .CircuitBreakerAsync(5, TimeSpan.FromSeconds(45)));
 builder.Services.AddScoped(typeof(IRepositoryAsync<>),typeof(RepositoryAsync<>));
+builder.Services.AddSingleton<ISerialPortManager>(serialPort => new SerialPortManager("COM7", 9600));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,13 +40,13 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Auth}/{action=Login}/{id?}");
 
 app.Run();

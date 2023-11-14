@@ -12,7 +12,10 @@ namespace PostureWebSite.Repository
         {
             this.context = context;
         }
-
+        public async Task<T?> Find(Expression<Func<T, bool>> expr)
+        {
+            return await EntitySet.AsNoTracking().FirstOrDefaultAsync(expr);
+        }
         protected DbSet<T> EntitySet
         {
             get

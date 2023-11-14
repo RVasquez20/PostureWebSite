@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace PostureWebSite.Models;
 
@@ -27,4 +29,25 @@ public partial class RegistroBotone
     public int? IdUser { get; set; }
 
     public virtual Usuario? IdUserNavigation { get; set; }
+}
+
+public class DataRecived
+{
+    [JsonPropertyName("BUTTON1")]
+    public bool BUTTON1 { get; set; }
+
+    [JsonPropertyName("BUTTON2")]
+    public bool BUTTON2 { get; set; }
+
+    [JsonPropertyName("BUTTON3")]
+    public bool BUTTON3 { get; set; }
+
+    [JsonPropertyName("BUTTON4")]
+    public bool BUTTON4 { get; set; }
+
+    [JsonPropertyName("BUTTON5")]
+    public bool BUTTON5 { get; set; }
+
+    [JsonPropertyName("BUTTON6")]
+    public bool BUTTON6 { get; set; }
 }

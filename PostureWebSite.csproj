@@ -23,6 +23,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="Polly" Version="8.0.0" />
     <PackageReference Include="Polly.Extensions.Http" Version="3.0.0" />
+    <PackageReference Include="Rvasquez.SerialPortLibrary" Version="2.0.7" />
     <PackageReference Include="RvasquezUtilitiesNet6MVC" Version="1.0.0" />
   </ItemGroup>
 
